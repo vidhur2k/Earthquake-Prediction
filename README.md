@@ -1,7 +1,11 @@
 # Earthquake Damage Prediction
 
+![Competition/Dataset Information](https://www.drivendata.org/competitions/57/nepal-earthquake/page/136/)
+
 ## Introduction and Background
 Within the United States alone, earthquakes destroy nearly $4.4B of economic value yearly. Our team will be delving into the 2015 Nepal Earthquake Open Data Portal. This data, which was collected using mobile devices following the Gorkha Earthquake of April 2015, details the level of destruction brought upon more than 200,000 buildings in the area. By utilizing various features reported by Nepali citizens (such as building size, purpose, and construction material), we will construct a machine learning classifier capable of determining the extent to which a building would be damaged. We will also run unsupervised clustering algorithms to search for features that best represent the damage classifications. This project, combined with technologies such as the CV-based city scanners following earthquakes (Ji, 2018) will ultimately provide a better understanding of susceptibility to earthquake-induced damage, valuable information that can be leveraged by city planners.
+
+![Earthquake](earthquake.jpg)
 
 ## Methods
 This project will be divided into two parts:
@@ -12,6 +16,104 @@ The data has been collected for us, but we plan to spend a significant amount of
 
 ## Expected Results
 Using supervised machine learning algorithms we hope to identify which factors affect the level of damage to a building from an earthquake. We’ll compare each of the results by micro averaged F1 score, which will balance precision and recall modified to gauge accuracy for classification into 3 categories (DrivenData). We can also use dimensionality reduction to reduce the number of features from 38 to a more manageable amount by seeing which features are correlated to each other.
+
+# RESULTS
+
+## Methods
+
+The data has been collected for us, but we plan to spend a significant amount of time preparing (cleaning, encoding, etc) the data for the model. We will also perform meaningful visualizations to better understand the relationships between our features. The classifier will be trained using supervised learning algorithms such as Support Vector Regressors (Asim, 2018), Logistic Regression, and Hybrid Neural Networks (Asim, 2018) and unsupervised learning algorithms such as KMeans clustering. The hyperparameters will be tuned using the GridSearchCV process. The model performances will be compared using our test set and the one that ​generalizes t​ he best will be chosen.
+
+- Multiple Logistic regression
+- Support vector regression
+- Kmeans
+- DBSCAN
+- PCA
+- LDA
+- Cross validation
+- Artificial Neural Networks
+- Hybrid Neural Network
+- Decision Tree
+https://www.datasciencecentral.com/profiles/blogs/decision-tree-vs-random-forest-vs-boosted-trees-explained
+- Random Forest Decision Tree
+- XGBoost Decision Tree
+ (add plots under section option)
+ 
+### PCA and LDA
+At the end of our preprocessing step, we were left with a total of 71 features after categorical encoding. 
+It was not ideal for us to feed this into the classifiers and neural net architectures that we had constructed as it 
+was entirely possible for us to capture the variability and patterns in the data with fewer features. Thus, we decided
+to try some dimensionality reduction techniques to perform effective feature selection.
+
+We began with **Principal Component Analysis**. It uses SVD to produce a set of vectors known as the principal components,
+with the objective of capturing the maximum variability in the data with the fewest number of features. 
+
+The results of PCA in 2 dimensions is shown below
+
+![](2DPca.png)
+
+It is quite clear that there isn't a discernable boundary between the principal components. The situation
+does not improve much when visualized in 3 dimensions:
+
+![](3DPCA.png)
+
+Thus, PCA did not prove to be effective with our dataset. We thus resorted to another method: 
+Linear Discriminant Analysis. It simply attempts to express a linear dependence relationship between the features 
+in order to root out features with no additional novel information. The results of LDA on the dataset are shown below:
+
+![](LDA.png)
+
+Similar to PCA, there is no discernable clusters produced by LDA. To summarize, dimensionality reduction proved
+to be of no use to us in terms of feature selection. We thus decided to move forward by maintaining all features in the dataset.
+
+### Neural Networks (using SKLearn and Keras)
+
+One of the primary reasons for resorting to neural networks was due to the shear number of features to consider in the dataset.
+They have proven to effectively capture complex non-linear hypothesis with high accuracy. 
+
+We began with the Multilayer Perceptron algorithm 
+
+### Decision Trees
+There were 4 different types of decision trees that were evaluated including normal decision trees, random forest, extreme gradient boosting, and lite gradient boosting. Using the one-hot encoded data to convert categorical data into numerical data and 5-fold cross validation, a small version of each type of tree was created to compare their effectiveness by the F1 score metric. 
+
+![](source_images/baseline_tree_comp.png)
+
+The results from the initial F1 score comparison demonstrate that random forest, extreme gradient boosting, and lite gradient boosting are more promising than the normal decision tree. The normal decision tree had already started overfitting the data since its train accuracy is significantly higher than its validation accuracy. Due to this overfitting, normal decision trees were not explored farther.
+
+### Random Forest
+
+Random forest decision trees reduce the variance in decision trees since they specify random feature subsets and build and combine many small trees. To make a prediction, random forest trees will either take the prediciton with the highest probability or average the predictions made by its smaller trees. By increasing the number of trees in the forest, both the training and validation accuracy increase due to the smaller tree averages converging on the true trends in the data. This is the idea of ensemble learning which is revisited later in the decision tree exploration.
+
+### Extreme Gradient Boosting
+
+Extreme gradient boosting also is composed of a set of decision trees but is built by training a tree to add to the forest. Instead of using an average or max of the probabilities from its trees while making predictions, extreme gradient boosting combines the tree prediciton results sequentially (Glen). Increasing the number of trees in the forest also improves the accuracy.
+
+### Lite Gradient Boosting
+
+Lite gradient boosting is also a gradient boosting framework, however it builds its trees by adding to leaves instead of adding levels.
+
+
+![](source_images/leafwisegrowth.png)
+![](source_images/levelwisegrowth.png)
+
+This architecture is highly dependent on the number of leaves it expands. More leaves allow it to fit data better, but also can cause overfitting. This architecture can also be used with ensemble learning, and adding more trees will increase the accuracy. The results from the baseline accuracy tree test indicate that the tree should be made to fit the training data better since the train and validation accuracies were very similar. A comparison of the F1 score validation accuracies with varying the number of leaves is shown below.
+
+![](source_images/num_leaves_analysis.png)
+
+The comparison of number of leaves above reveals that the optimal number of trees is 80. While evaluating the optimal number of trees, the F1 score constantly increases with diminishing reward. However, as the number of trees increases, the training time increases. 3,000 was the final number of trees selected.
+
+The overall results from tuning are shown in the plot below.
+
+![](source_images/tuned_tree_comp.png)
+
+This plot shows that the lite gradient boosting was the best technique at the end of the tuning done in this analysis.
+
+### Competition Results
+We entered the data contest associated with the Earthquake dataset. We believe that the accuracy of our best classifier
+on their private test set is an accurate reflection of how well it generalizes to real-world data.
+
+We submitted our Lite Gradient Boosting method to classify the instances on their test set, and received the following results: 
+
+![](Competition.png)
 
 ## Discussion
 This project can benefit architects, engineers, and city planners by using the classification model to extrapolate and predict types of buildings that are likely to suffer from earthquake damage. Buildings with attributes similar to those that were more damaged can be reinforced. Both the visualization and classification models can be used in conjunction with earthquake prediction research (Rouet-Leduc, 2017) to provide advance humanitarian aid so buildings can be reinforced to take significantly less damage.
