@@ -51,6 +51,7 @@ The data has been collected for us, but we plan to spend a significant amount of
 - Decision Tree
 - Random Forest Decision Tree
 - XGBoost Decision Tree
+- LightGBM
  
 ### PCA and LDA
 At the end of our preprocessing step, we were left with a total of 71 features after categorical encoding. 
