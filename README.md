@@ -7,7 +7,7 @@ Within the United States alone, earthquakes destroy nearly $4.4B of economic val
 
 ![Earthquake](earthquake.jpg)
 
-## Methods
+## Planning
 This project will be divided into two parts:
 1. Data Preprocessing and Visualization
 2. Model Selection, Training, and Evaluation
