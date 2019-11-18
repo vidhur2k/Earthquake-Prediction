@@ -17,7 +17,7 @@ The data has been collected for us, but we plan to spend a significant amount of
 ## Expected Results
 Using supervised machine learning algorithms we hope to identify which factors affect the level of damage to a building from an earthquake. We’ll compare each of the results by micro averaged F1 score, which will balance precision and recall modified to gauge accuracy for classification into 3 categories (DrivenData). We can also use dimensionality reduction to reduce the number of features from 38 to a more manageable amount by seeing which features are correlated to each other.
 
-# RESULTS
+# Results
 
 ## Data Exploration and Preprocessing
 Our initial approach was to scan for data imbalance, search for NaN values, and visualize the distributions of various features as well as the degree to which they correlation with the value we were trying to predict (damage grade).
